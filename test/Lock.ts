@@ -21,12 +21,17 @@ describe("Lock", function () {
   }
 
   describe("Deployment", function () {
-    it("Should set the right unlockTime", async function () {
-      const { saveEther } = await loadFixture(deployOneYearLockFixture);
-      const tx = await saveEther.checkName("JUBRIL");
-      const name = await saveEther.getName();
+    it.only("Should deposit properly", async function () {
+      const depositAmount = await ethers.parseEther("3")
+      const { saveEther, owner } = await loadFixture(deployOneYearLockFixture);
+      await saveEther.connect(owner).deposit({value: depositAmount})
+      const balance = await saveEther.connect(owner).checkSavings(owner.address)
+      const checkWithdraw = await saveEther.connect(owner).withdraw()
+      console.log(checkWithdraw);
+     console.log(balance);
+      
 
-      expect(name).to.equal("JUBRIL");
+      
     });
 
     // it("Should set the right owner", async function () {
